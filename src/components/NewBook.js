@@ -1,43 +1,61 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-// queries
-import { ADD_BOOK } from '../queries';
+import { gql, useMutation } from '@apollo/client';
 
-const NewBook = ({ setError, show, updateCacheWith }) => {
-  const [title, setTitle] = useState('aaa');
-  const [author, setAuthor] = useState('bbbb');
-  const [published, setPublished] = useState(123);
+const ADD_BOOK = gql`
+  mutation addBook(
+    $title: String!
+    $published: Int!
+    $author: String!
+    $genres: [String!]!
+  ) {
+    addBook(
+      title: $title
+      published: $published
+      author: $author
+      genres: $genres
+    ) {
+      title
+      published
+      author
+      published
+    }
+  }
+`;
+
+const NewBook = props => {
+  const [title, setTitle] = useState('title');
+  const [author, setAuhtor] = useState('author');
+  const [published, setPublished] = useState(1234);
   const [genre, setGenre] = useState('');
-  const [genres, setGenres] = useState(['a']);
-
-  const [changeBookForm, result] = useMutation(ADD_BOOK, {
+  const [genres, setGenres] = useState(['genre1', 'genre2']);
+  const [changeBookForm] = useMutation(ADD_BOOK, {
     onError: error => {
-      if (error.graphQLErrors[0]) {
-        setError(error.graphQLErrors[0]);
+      if (error) {
+        console.log(error);
       }
-    },
-    update: (store, res) => {
-      updateCacheWith(res.data.addedBook);
     }
   });
 
-  if (!show) return null;
-  if (result.loading) return <div>Now Loading... </div>;
+  if (!props.show) {
+    return null;
+  }
 
   const submit = async event => {
     event.preventDefault();
 
-    console.log('Create Book Successfuly');
+    console.log('add book...');
+
     changeBookForm({
       variables: { title, published: parseInt(published), author, genres }
     });
 
-    setTitle('');
-    setPublished('');
-    setAuthor('');
-    setGenres([]);
-    setGenre('');
+    // setTitle('');
+    // setPublished('');
+    // setAuhtor('');
+    // setGenres([]);
+    // setGenre('');
   };
+
   const addGenre = () => {
     setGenres(genres.concat(genre));
     setGenre('');
@@ -57,7 +75,7 @@ const NewBook = ({ setError, show, updateCacheWith }) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuthor(target.value)}
+            onChange={({ target }) => setAuhtor(target.value)}
           />
         </div>
         <div>
