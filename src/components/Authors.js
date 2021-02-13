@@ -37,7 +37,7 @@ const Authors = props => {
             ))}
         </tbody>
       </table>
-      <SetBirthYear />
+      {authors && <SetBirthYear authors={authors.map(author => author.name)} />}
     </div>
   );
 };
