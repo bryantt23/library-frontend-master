@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LOGIN } from '../queries';
 import { gql, useMutation } from '@apollo/client';
 
-function LogIn({ setToken, setPage }) {
+function LogIn({ show, setToken, setPage }) {
   const [name, setName] = useState('bry');
   const [password, setPassword] = useState('secret');
 
@@ -30,6 +30,10 @@ function LogIn({ setToken, setPage }) {
       variables: { username: name, password }
     });
   };
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div>
