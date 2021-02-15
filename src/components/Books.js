@@ -10,11 +10,18 @@ const Books = props => {
     return <div>loading...</div>;
   } else {
     books = result.data.allBooks;
+    console.log(books);
   }
 
   if (!props.show) {
     return null;
   }
+
+  //get all genres in a set
+  //render genres
+  //onclick for each genre
+  //use the click as a state
+  //filter based on that state
 
   return (
     <div>
