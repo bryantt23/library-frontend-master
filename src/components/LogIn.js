@@ -16,6 +16,7 @@ function LogIn({ show, setToken, setPage }) {
 
   useEffect(() => {
     if (result.data) {
+      console.log(result);
       const token = result.data.login.value;
       setToken(token);
       localStorage.setItem('user-token', token);
