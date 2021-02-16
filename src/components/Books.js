@@ -3,18 +3,20 @@ import { gql, useQuery } from '@apollo/client';
 import { ALL_BOOKS } from '../queries';
 import BooksTable from './BooksTable';
 
-const Books = props => {
-  const result = useQuery(ALL_BOOKS);
+const Books = ({ books, show }) => {
+  // const result = useQuery(ALL_BOOKS);
   const [genre, setGenre] = useState('');
   let genreButtons;
 
-  let books;
-  if (result.loading) {
-    return <div>loading...</div>;
-  } else {
-    books = result.data.allBooks;
-    getGenres(books);
-  }
+  getGenres(books);
+
+  // let books;
+  // if (result.loading) {
+  //   return <div>loading...</div>;
+  // } else {
+  //   books = result.data.allBooks;
+  //   getGenres(books);
+  // }
 
   function getGenres(books) {
     let genres = new Set();
@@ -33,7 +35,7 @@ const Books = props => {
     ));
   }
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
 
