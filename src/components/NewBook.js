@@ -17,11 +17,6 @@ const NewBook = props => {
       }
     }
   });
-  useSubscription(BOOK_ADDED, {
-    onSubscriptionData: ({ subscriptionData }) => {
-      window.alert(JSON.stringify(subscriptionData));
-    }
-  });
 
   if (!props.show) {
     return null;

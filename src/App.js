@@ -26,21 +26,26 @@ const App = () => {
     }
   }, []);
 
-  const updateCacheWith = addedBook => {
-    const includedIn = (set, object) => set.map(b => b.id).includes(object.id);
+  const updateCacheWith = ({ bookAdded }) => {
+    const includedIn = (set, object) =>
+      set.map(b => b.title).includes(object.title);
 
     const dataInStore = client.readQuery({ query: ALL_BOOKS });
-    if (!includedIn(dataInStore.allBooks, addedBook)) {
+    if (!includedIn(dataInStore.allBooks, bookAdded)) {
+      console.log(dataInStore.allBooks);
+      debugger;
       client.writeQuery({
         query: ALL_BOOKS,
-        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+        data: { allBooks: dataInStore.allBooks.concat(bookAdded) }
       });
     }
   };
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data;
       window.alert(JSON.stringify(subscriptionData));
+      updateCacheWith(addedBook);
     }
   });
 

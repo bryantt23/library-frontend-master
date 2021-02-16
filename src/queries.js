@@ -21,15 +21,22 @@ export const ALL_AUTHORS = gql`
   }
 `;
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    author
+    published
+    genres
+  }
+`;
+
 export const BOOK_ADDED = gql`
   subscription {
     bookAdded {
-      title
-      author
-      published
-      genres
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `;
 
 export const ADD_BOOK = gql`
