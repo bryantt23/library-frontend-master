@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries';
+import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS, BOOK_ADDED } from '../queries';
+import { useSubscription } from '@apollo/client';
 
 const NewBook = props => {
   const [title, setTitle] = useState('title');
   const [author, setAuhtor] = useState('author');
   const [published, setPublished] = useState(1234);
   const [genre, setGenre] = useState('');
-  const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState(['comics']);
   const [changeBookForm] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
     onError: error => {
       if (error) {
         console.log(error);
       }
+    }
+  });
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(JSON.stringify(subscriptionData));
     }
   });
 
